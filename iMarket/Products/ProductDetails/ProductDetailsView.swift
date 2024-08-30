@@ -14,7 +14,7 @@ struct ProductDetailsView: View {
     
     var body: some View {
         ZStack {
-            ScrollView{
+            ScrollView {
                 VStack {
                     HStack {
                         Image(systemName: "star")
@@ -127,56 +127,66 @@ struct ProductDetailsView: View {
                     }
                     .padding(.bottom)
                     
-                    VStack {
-                        HStack {
-                            Text("Charlotte Lopez")
-                                .font(.callout)
-                                .fontWeight(.bold)
-                            
-                            Spacer()
-                            
-                            Text("May 5, 2024")
-                                .font(.subheadline)
-                                .foregroundStyle(.gray)
-                        }
-                        .padding(.bottom, 8)
-                        
-                        HStack {
-                            Image(systemName: "star")
-                                .font(.caption)
-                            Image(systemName: "star")
-                                .font(.caption)
-                            Image(systemName: "star")
-                                .font(.caption)
-                            Image(systemName: "star")
-                                .font(.caption)
-                            Image(systemName: "star")
-                                .font(.caption)
-                            
-                            Spacer()
-                        }
-                        .padding(.bottom, 8)
-                        
-                        HStack {
-                            Text("Highly reccommend!")
-                                .font(.subheadline)
-                                .foregroundStyle(.gray)
-                            
-                            Spacer()
-                        }
+                    ForEach(product.reviews, id: \.self) { review in
+                        reviewItem(review: review)
                     }
                 }
-                .padding()
             }
+            .navigationTitle(product.title) // Set the title of the navigation bar
+            .navigationBarTitleDisplayMode(.inline)
         }
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                Text(product.title)
+    }
+    
+    // #Preview {
+    //    ProductDetailsView()
+    // }
+    
+    struct reviewItem: View {
+        @State var review: Review
+        @EnvironmentObject var cartProducts: MyCart
+        @EnvironmentObject var likedItems: MyItems
+        @StateObject var vm = ProductDetailsVM()
+        
+        var body: some View {
+            VStack {
+                HStack {
+                    Text(review.reviewerName)
+                        .font(.callout)
+                        .fontWeight(.bold)
+                    
+                    Spacer()
+                    
+                    Text(vm.formatDate(review.date) ?? "")
+                        .font(.subheadline)
+                        .foregroundStyle(.gray)
+                }
+                .padding(.bottom, 8)
+                
+                HStack {
+                    Image(systemName: "star")
+                        .font(.caption)
+                    Image(systemName: "star")
+                        .font(.caption)
+                    Image(systemName: "star")
+                        .font(.caption)
+                    Image(systemName: "star")
+                        .font(.caption)
+                    Image(systemName: "star")
+                        .font(.caption)
+                    
+                    Spacer()
+                }
+                .padding(.bottom, 8)
+                
+                HStack {
+                    Text(review.comment)
+                        .font(.subheadline)
+                        .foregroundStyle(.gray)
+                    
+                    Spacer()
+                }
             }
+            .padding()
         }
     }
 }
-
-// #Preview {
-//    ProductDetailsView()
-// }

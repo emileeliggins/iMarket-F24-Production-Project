@@ -87,7 +87,7 @@ struct ProductPageView: View {
     @ViewBuilder
     private var loadingView: some View {
         VStack {
-            Text("Loading")
+            Text("Searching")
         }
         Spacer()
     }
@@ -106,7 +106,7 @@ struct ProductPageView: View {
     @ViewBuilder
     private var noResultView: some View {
         Spacer()
-        
+
         ZStack {
             VStack {
                 Image(systemName: "magnifyingglass")
@@ -123,13 +123,13 @@ struct ProductPageView: View {
                     .foregroundStyle(.gray)
             }
         }
-        
+
         Spacer()
     }
 
     @ViewBuilder
     private func errorView(_ error: Error) -> some View {
-        Text("Error: \(error)")
+        Text("Error")
         Spacer()
     }
 }
@@ -144,74 +144,67 @@ struct ProductItem: View {
     @EnvironmentObject var likedItems: MyItems
 
     var body: some View {
-        NavigationStack {
-            
-            NavigationLink {
-                ProductDetailsView(product: product)
-            } label: {
-                HStack {
-                    AsyncImage(url: URL(string: product.thumbnail)) { image in
-                        image.image?.resizable().scaledToFit().frame(width: 128, height: 128)
-                    }
+        NavigationLink {
+            ProductDetailsView(product: product)
+        } label: {
+            HStack {
+                AsyncImage(url: URL(string: product.thumbnail)) { image in
+                    image.image?.resizable().scaledToFit().frame(width: 128, height: 128)
+                }
 
-                    VStack(alignment: .leading) {
-                        Text(product.title)
-        //                    .foregroundStyle(Color.white)
-                            .font(.title3)
+                VStack(alignment: .leading) {
+                    Text(product.title)
+                        //                    .foregroundStyle(Color.white)
+                        .font(.title3)
 
-                        Text(String(format: "$%.2f", product.price))
-                            .font(.title2)
-                            .fontWeight(.bold)
-        //                    .foregroundStyle(Color.white)
+                    Text(String(format: "$%.2f", product.price))
+                        .font(.title2)
+                        .fontWeight(.bold)
+                    //                    .foregroundStyle(Color.white)
 
-                        Text(product.category.localizedCapitalized)
-                            .padding(4)
-                            .background(.categoryBackground)
-        //                    .foregroundStyle(Color.white)
-                            .cornerRadius(3.0)
+                    Text(product.category.localizedCapitalized)
+                        .padding(4)
+                        .background(.categoryBackground)
+                        //                    .foregroundStyle(Color.white)
+                        .cornerRadius(3.0)
 
-                        HStack {
-                            Button {
-                                cartProducts.addProduct(product)
-                            } label: {
-                                Text("Add to Cart")
-                                    .padding(.vertical, /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
-                                    .padding(.horizontal, 40)
-                                    .foregroundColor(.primary)
-                                    .background(Color.blue)
-                                    .cornerRadius(20.0)
-                            }
-
-                            Button {
-                                if likedItems.isProductLiked(product) {
-                                    likedItems.removeProduct(product)
-                                } else {
-                                    likedItems.addProduct(product)
-                                }
-                            } label: {
-                                VStack(alignment: .center) {
-                                    Image(systemName: likedItems.isProductLiked(product) ? "heart.fill" : "heart")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 20, height: 20)
-                                        //                            .foregroundStyle(Color.white)
-                                        .padding(11)
-                                        .background(.categoryBackground)
-                                        .cornerRadius(30.0)
-                                }
-                            }
-                            .buttonStyle(.plain)
+                    HStack {
+                        Button {
+                            cartProducts.addProduct(product)
+                        } label: {
+                            Text("Add to Cart")
+                                .padding(.vertical, /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
+                                .padding(.horizontal, 40)
+                                .foregroundColor(.primary)
+                                .background(Color.blue)
+                                .cornerRadius(20.0)
                         }
+
+                        Button {
+                            if likedItems.isProductLiked(product) {
+                                likedItems.removeProduct(product)
+                            } else {
+                                likedItems.addProduct(product)
+                            }
+                        } label: {
+                            VStack(alignment: .center) {
+                                Image(systemName: likedItems.isProductLiked(product) ? "heart.fill" : "heart")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 20, height: 20)
+                                    //                            .foregroundStyle(Color.white)
+                                    .padding(11)
+                                    .background(.categoryBackground)
+                                    .cornerRadius(30.0)
+                            }
+                        }
+                        .buttonStyle(.plain)
                     }
                 }
-                .frame(width: 361, height: 128)
-                .padding()
             }
-            .buttonStyle(.plain)
-
-            
-           
+            .frame(width: 361, height: 128)
+            .padding()
         }
-        
+        .buttonStyle(.plain)
     }
 }

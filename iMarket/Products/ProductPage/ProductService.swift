@@ -22,7 +22,7 @@ struct ProductService {
         let (data, response) = try await session.data(from: url)
         
         //checking response code and handle
-        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+        guard let response = response as? HTTPURLResponse, response.statusCode == (200) else {
             fatalError("Invalid response") //create custom error to throw
         }
         

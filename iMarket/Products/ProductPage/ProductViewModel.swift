@@ -38,6 +38,7 @@ class ProductViewModel: ObservableObject{
         state = .loading
         do {
             let prods = try await ProductService.searchProducts(searchTerm: searchTerm)
+            if prods.isEmpty {state = .noResult}
             products = prods
         } catch {
             state = .error(error: error)
